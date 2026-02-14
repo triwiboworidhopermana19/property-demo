@@ -25,6 +25,11 @@ export function usePropertyFilters(properties: Ref<Property[]>) {
       return []
     }
 
+    // During SSR, return all properties to avoid hydration mismatch
+    if (!import.meta.client) {
+      return properties.value
+    }
+
     const f = activeFilters.value
     let list = properties.value.slice()
 
@@ -50,8 +55,8 @@ export function usePropertyFilters(properties: Ref<Property[]>) {
       }
     }
 
-    // Radius filter (skip during SSR)
-    if (f.radius && import.meta.client) {
+    // Radius filter
+    if (f.radius) {
       const radiusKm = Number(f.radius)
       const [centerLat, centerLng] = mapCenter.value
       list = list.filter(p =>
