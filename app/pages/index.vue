@@ -2,7 +2,8 @@
   <div class="flex flex-1 overflow-hidden">
     <SidebarFilters @update:filters="onFilters" />
 
-    <div class="flex-1 relative">
+    <!-- Map takes full width on mobile, flex-1 on desktop -->
+    <div class="flex-1 relative w-full md:w-auto">
       <ClientOnly>
         <MapView :properties="filteredProperties" :center="mapCenter" :zoom="mapZoom" />
         <template #fallback>

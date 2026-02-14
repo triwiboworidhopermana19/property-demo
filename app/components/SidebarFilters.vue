@@ -27,6 +27,9 @@ const priceRange = ref('500000000-2000000000')
 const radius = ref('1')
 const status = ref<string[]>([])
 
+// Mobile drawer state
+const isOpen = ref(false)
+
 function toggleStatus(key: string) {
   const idx = status.value.indexOf(key)
   if (idx === -1) {
@@ -34,6 +37,14 @@ function toggleStatus(key: string) {
   } else {
     status.value = status.value.filter(s => s !== key)
   }
+}
+
+function toggleDrawer() {
+  isOpen.value = !isOpen.value
+}
+
+function closeDrawer() {
+  isOpen.value = false
 }
 
 // Auto-emit on any change — watchEffect tracks all refs read inside
@@ -49,7 +60,43 @@ watchEffect(() => {
 </script>
 
 <template>
-  <aside class="bg-sidebar-bg p-5 overflow-y-auto shrink-0" style="width: 300px;">
+  <div>
+    <!-- Mobile Toggle Button -->
+    <button
+      @click="toggleDrawer"
+      class="md:hidden fixed bottom-6 right-6 z-[9999] bg-navy text-white p-4 rounded-full shadow-2xl hover:bg-navy/90 transition-all hover:scale-110 active:scale-95"
+      aria-label="Toggle Filters"
+      style="box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4), 0 8px 10px -6px rgba(0, 0, 0, 0.3);"
+    >
+      <Icon name="lucide:sliders-horizontal" class="w-6 h-6" />
+    </button>
+
+    <!-- Backdrop -->
+    <div
+      v-if="isOpen"
+      @click="closeDrawer"
+      class="md:hidden fixed inset-0 bg-black/50 z-[90] transition-opacity"
+    />
+
+    <!-- Sidebar/Drawer -->
+    <aside
+      class="bg-sidebar-bg p-5 overflow-y-auto shrink-0 transition-transform duration-300
+             md:static md:translate-x-0 md:w-[300px]
+             fixed inset-y-0 left-0 z-[9999] w-[280px]"
+      :class="isOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'"
+    >
+    <!-- Mobile Header with Close Button -->
+    <div class="md:hidden flex items-center justify-between mb-4 pb-4 border-b border-gray-200">
+      <h2 class="text-lg font-bold text-gray-800">Filters</h2>
+      <button
+        @click="closeDrawer"
+        class="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+        aria-label="Close Filters"
+      >
+        <Icon name="lucide:x" class="w-5 h-5" />
+      </button>
+    </div>
+
     <!-- City -->
     <div>
       <h3 class="text-sm font-bold text-gray-700 mb-2">Kota</h3>
@@ -147,4 +194,5 @@ watchEffect(() => {
       </div>
     </div>
   </aside>
+  </div>
 </template>
