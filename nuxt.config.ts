@@ -11,6 +11,18 @@ export default defineNuxtConfig({
     '@nuxt/eslint',
     '@nuxt/icon'
   ],
-  
-  css: ['leaflet/dist/leaflet.css']
+
+  css: ['leaflet/dist/leaflet.css'],
+
+  // Vercel deployment configuration
+  nitro: {
+    preset: 'vercel'
+  },
+
+  // Ensure proper SSR handling
+  vite: {
+    optimizeDeps: {
+      exclude: ['leaflet']
+    }
+  }
 })

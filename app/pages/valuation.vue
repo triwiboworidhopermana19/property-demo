@@ -114,7 +114,14 @@
         <!-- Right Column: Map Only -->
         <div>
           <div class="bg-white rounded-lg shadow-sm overflow-hidden border border-gray-200 sticky top-" style="height: 600px;">
-            <MapView :properties="mapProperties" :center="mapCenter" :zoom="13" />
+            <ClientOnly>
+              <MapView :properties="mapProperties" :center="mapCenter" :zoom="13" />
+              <template #fallback>
+                <div class="flex items-center justify-center h-full bg-gray-100">
+                  <div class="text-gray-500">Loading map...</div>
+                </div>
+              </template>
+            </ClientOnly>
           </div>
         </div>
       </div>
