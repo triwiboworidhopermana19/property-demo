@@ -3,14 +3,15 @@
     <SidebarFilters @update:filters="onFilters" />
 
     <div class="flex-1 relative">
-      <ClientOnly>
-        <MapView :properties="filteredProperties" :center="mapCenter" :zoom="mapZoom" />
-        <template #fallback>
-          <div class="flex items-center justify-center h-full bg-gray-100">
-            <div class="text-gray-500">Loading map...</div>
-          </div>
-        </template>
-      </ClientOnly>
+      <MapView
+        v-if="filteredProperties && filteredProperties.length > 0"
+        :properties="filteredProperties"
+        :center="mapCenter"
+        :zoom="mapZoom"
+      />
+      <div v-else class="flex items-center justify-center h-full bg-gray-100">
+        <div class="text-gray-500">No properties found</div>
+      </div>
     </div>
   </div>
 </template>
